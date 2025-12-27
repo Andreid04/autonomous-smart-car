@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pi5 Camera Stream</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="{{ url_for('static', filename='script.js') }}" defer></script>
+
+</head>
+
+<body>
+
+  <h1>Live Camera Feed</h1>
+
+  <div class="video-container">
+    <img src="{{ url_for('video') }}" width="auto" height="960" alt="Camera Feed">
+  </div>
+
+  <p>Use <b>WASD</b> to move. <b>Z</b> to increase speed, <b>C</b> to decrease.</p>
+  <p id="speed">Speed: 40%</p>
+  <p id="pressed">Pressed: </p>
+
+</body>
+</html>
