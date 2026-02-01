@@ -18,6 +18,15 @@
     <img src="{{ url_for('video') }}" width="auto" height="960" alt="Camera Feed">
   </div>
 
+  <audio id="car-audio" preload="none">
+    <source src="{{ url_for('audio') }}" type="audio/wav">
+    Your browser does not support the audio element.
+  </audio>
+
+  <button onclick="startAudio()" style="padding: 10px; background: #28a745; color: white;">
+    🔊 Enable Audio
+  </button>
+
   <p>Use <b>WASD</b> to move. <b>Z</b> to increase speed, <b>C</b> to decrease.</p>
   <p id="speed">Speed: 40%</p>
   <p id="pressed">Pressed: </p>

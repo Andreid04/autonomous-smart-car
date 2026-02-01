@@ -60,3 +60,43 @@ document.addEventListener("keyup", (e) => {
     sendCommand(last);
   }
 });
+
+function startAudio() {
+    const audio = document.getElementById('car-audio');
+    const btn = document.querySelector('button[onclick="startAudio()"]');
+
+    // 1. Immediately disable button to prevent double-clicks
+    btn.disabled = true;
+    btn.innerText = "⌛ Connecting...";
+    btn.style.opacity = "0.6";
+
+    // Use a hardcoded path since url_for doesn't work in .js files
+    const audioUrl = "/audio?t=" + new Date().getTime();
+    
+    console.log("Attempting to connect to: " + audioUrl);
+    audio.src = audioUrl;
+
+    audio.play().then(() => {
+        console.log("Playback started successfully");
+        btn.innerText = "🔊 Audio Live";
+        btn.style.background = "#6c757d";
+
+        // 2. Buffer-skip logic: Keep audio as live as possible
+        setInterval(() => {
+            if (audio.buffered.length > 0) {
+                const end = audio.buffered.end(0);
+                const diff = end - audio.currentTime;
+                // If we are more than 2 seconds behind the stream, jump to the end
+                if (diff > 1.0) {
+                    audio.currentTime = end - 0.1;
+                }
+            }
+        }, 1000);
+
+    }).catch(err => {
+        console.error("Playback failed:", err);
+        // If it fails here, it's usually a network/stream error, not a click error
+    });
+}
+
+

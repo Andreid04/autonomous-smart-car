@@ -36,6 +36,14 @@ def control():
 
     return jsonify({"status": "ok", "speed": round(car.speed*100)})
 
+@app.route('/audio')
+def audio():
+    return Response(camera.gen_audio(), 
+                    mimetype="audio/wav",
+                    headers={"Cache-Control": "no-cache, no-store, must-revalidate",
+                             "Pragma": "no-cache",
+                             "Expires": "0"})
+    
 if __name__ == '__main__':
     # 0.0.0.0 is essential for Access Point mode
     app.run(host='0.0.0.0', port=5000, debug=False, threaded=True)
