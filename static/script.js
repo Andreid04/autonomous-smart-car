@@ -61,6 +61,40 @@ document.addEventListener("keyup", (e) => {
   }
 });
 
+let ledState = 0; // Start with LED off
+
+document.addEventListener('DOMContentLoaded', function() {
+    updateLedButton();
+});
+
+function updateLedButton() {
+    const btn = document.querySelector('.led-button');
+    if (ledState === 1) {
+        btn.style.background = "#ff6b6b";
+        btn.innerText = "💡 LED ON";
+    } else {
+        btn.style.background = "#ffc107";
+        btn.innerText = "💡 LED OFF";
+    }
+}
+
+function turnledon() {
+    ledState = ledState === 0 ? 1 : 0;
+    const btn = document.querySelector('.led-button');
+    
+    fetch("/led", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ state: ledState })
+    })
+        .then(r => r.json())
+        .then(data => {
+            console.log("LED state:", data.led_state);
+            updateLedButton();
+        })
+        .catch(console.error);
+}
+
 function startAudio() {
     const audio = document.getElementById('car-audio');
     const btn = document.querySelector('button[onclick="startAudio()"]');

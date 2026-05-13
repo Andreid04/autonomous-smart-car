@@ -1,10 +1,16 @@
 from flask import Flask, render_template, Response, request, jsonify
 from motor_driver import MotorController
 from camera import CameraStream
+import lgpio
 
 app = Flask(__name__)
 car = MotorController() # Using MotorController class
 camera = CameraStream() # Using CameraStream class
+
+# Initialize LED GPIO
+LED_PIN = 27
+chip = lgpio.gpiochip_open(0)
+lgpio.gpio_claim_output(chip, LED_PIN, 0)  # Start with LED off (for active LOW relay)
 
 @app.route('/')
 def index():
@@ -43,7 +49,14 @@ def audio():
                     headers={"Cache-Control": "no-cache, no-store, must-revalidate",
                              "Pragma": "no-cache",
                              "Expires": "0"})
-    
+
+@app.route('/led', methods=['POST'])
+def led():
+    global chip
+    state = request.get_json().get('state')
+    lgpio.gpio_write(chip, LED_PIN, state)
+    return jsonify({"status": "ok", "led_state": state})
+
 if __name__ == '__main__':
     # 0.0.0.0 is essential for Access Point mode
     app.run(host='0.0.0.0', port=5000, debug=False, threaded=True)

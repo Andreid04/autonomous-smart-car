@@ -36,9 +36,9 @@ class MotorController:
     def change_speed(self, delta):
         """Handles inc_speed and dec_speed logic"""
         if delta > 0:
-            self.speed = min(self.speed + 0.1, 0.7) # it blows up over 70%
+            self.speed = min(self.speed + 0.1, 0.95) # it blows up over 70%
         else:
-            self.speed = max(self.speed - 0.1, 0.2)
+            self.speed = max(self.speed - 0.1, 0.2) # it stalls under 20%
         
         # Immediately push the new speed to the hardware
         self._update_hardware_pwm()

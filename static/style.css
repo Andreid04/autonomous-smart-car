@@ -45,3 +45,15 @@ button:hover {
   background-color: #00bcd4;
   color: #111;
 }
+
+.audio-button {
+  padding: 10px; 
+  background: #28a745; 
+  color: white;
+}
+
+.led-button {
+  padding: 10px; 
+  background: #ffc107; 
+  color: black;
+}
